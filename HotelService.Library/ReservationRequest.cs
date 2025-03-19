@@ -8,18 +8,20 @@ public class ReservationRequest
     public string Description { get; private set; }
     public DateTime StartDate { get; private set; }
     public DateTime EndDate { get; private set; }
+    public Hotel Hotel { get; private set; }
 
-    public ReservationRequest(int room, string description, DateTime startDate, DateTime endDate)
+    public ReservationRequest(int room, string description, DateTime startDate, DateTime endDate, Hotel hotel)
     {
-        ValidateInputs(room, description, startDate, endDate);
+        ValidateConstructorInputs(room, description, startDate, endDate, hotel);
         
         Room = room;
         Description = description;
         EndDate = endDate;
         StartDate = startDate;
+        Hotel = hotel;
     }
 
-    private static void ValidateInputs(int room, string description, DateTime startDate, DateTime endDate)
+    private static void ValidateConstructorInputs(int room, string description, DateTime startDate, DateTime endDate, Hotel hotel)
     {
         if (room <= 0) 
             throw new ArgumentOutOfRangeException(nameof(room), "Room number must be greater than zero");
@@ -32,5 +34,8 @@ public class ReservationRequest
         
         if (endDate < startDate)
             throw new InvalidReservationDataException("End date cannot be earlier than start date");
+        
+        if(hotel == null) 
+            throw new ArgumentNullException(nameof(hotel), "Hotel cannot be null");
     }
 }
