@@ -1,27 +1,27 @@
 using HotelService.Library.Exceptions;
 
-namespace HotelService.Library;
+namespace HotelService.Library.Models;
 
-public class ReservationRequest
+public class ReservationModel
 { 
     public int Room { get; private set;}
     public string Description { get; private set; }
     public DateTime StartDate { get; private set; }
     public DateTime EndDate { get; private set; }
-    public Hotel Hotel { get; private set; }
+    public HotelModel HotelModel { get; private set; }
 
-    public ReservationRequest(int room, string description, DateTime startDate, DateTime endDate, Hotel hotel)
+    public ReservationModel(int room, string description, DateTime startDate, DateTime endDate, HotelModel hotelModel)
     {
-        ValidateConstructorInputs(room, description, startDate, endDate, hotel);
+        ValidateConstructorInputs(room, description, startDate, endDate, hotelModel);
         
         Room = room;
         Description = description;
         EndDate = endDate;
         StartDate = startDate;
-        Hotel = hotel;
+        HotelModel = hotelModel;
     }
 
-    private static void ValidateConstructorInputs(int room, string description, DateTime startDate, DateTime endDate, Hotel hotel)
+    private static void ValidateConstructorInputs(int room, string description, DateTime startDate, DateTime endDate, HotelModel hotelModel)
     {
         if (room <= 0) 
             throw new ArgumentOutOfRangeException(nameof(room), "Room number must be greater than zero");
@@ -35,7 +35,7 @@ public class ReservationRequest
         if (endDate < startDate)
             throw new InvalidReservationDataException("End date cannot be earlier than start date");
         
-        if(hotel == null) 
-            throw new ArgumentNullException(nameof(hotel), "Hotel cannot be null");
+        if(hotelModel == null) 
+            throw new ArgumentNullException(nameof(hotelModel), "Hotel cannot be null");
     }
 }

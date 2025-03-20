@@ -1,22 +1,20 @@
 using HotelService.Library.Exceptions;
 
-namespace HotelService.Library;
+namespace HotelService.Library.Models;
 
-public class Hotel
+public class HotelModel : ICloneable
 {
     public string Name { get; private set; }
     public int Capacity { get; private set; }
     public string Description { get; private set; }
     //Composition
-    private readonly List<ReservationRequest> _reservationRequests;
 
-    public Hotel(string name, int capacity, string description)
+    public HotelModel(string name, int capacity, string description)
     {
         ValidateConstructorInputs(name, capacity, description);
         Name = name;
         Capacity = capacity;
         Description = description;
-        _reservationRequests = new List<ReservationRequest>();
     }
 
     private static void ValidateConstructorInputs(string name, int capacity, string description)
@@ -29,25 +27,30 @@ public class Hotel
             throw new ArgumentNullException(nameof(description), "Description cannot be null or empty");
     }
 
-    public void AddReservation(int room, string description, DateTime startDate, DateTime endDate, Client client)
+    public object Clone()
     {
-        var reservation = new ReservationRequest(room, description, startDate, endDate, this);
+        return new HotelModel(Name, Capacity, Description);
+    }
+
+    /*public void AddReservation(int room, string description, DateTime startDate, DateTime endDate, ClientModel clientModel)
+    {
+        var reservation = new ReservationModel(room, description, startDate, endDate, this);
         ValidateRoom(reservation);
-        client.AddReservationRequest(reservation);
+        clientModel.AddReservationRequest(reservation);
         _reservationRequests.Add(reservation);
     }
 
-    private void ValidateRoom(ReservationRequest reservationRequest)
+    private void ValidateRoom(ReservationModel reservationModel)
     {
         if(_reservationRequests.Any(request => 
-            request.Room == reservationRequest.Room && 
-            reservationRequest.StartDate < request.EndDate && request.StartDate < reservationRequest.EndDate))
+            request.Room == reservationModel.Room && 
+            reservationModel.StartDate < request.EndDate && request.StartDate < reservationModel.EndDate))
         {
-            throw new AlreadyReservedException(reservationRequest.Room);
+            throw new AlreadyReservedException(reservationModel.Room);
         }
         
-        if (reservationRequest.Room > Capacity)
-            throw new RoomCapacityExceededException(reservationRequest.Room, Capacity);
+        if (reservationModel.Room > Capacity)
+            throw new RoomCapacityExceededException(reservationModel.Room, Capacity);
     }
-    
+    */
 }
