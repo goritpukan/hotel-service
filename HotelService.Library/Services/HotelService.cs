@@ -31,7 +31,7 @@ public class HotelService
         if (hotel is null)
             throw new HotelNotFoundException(name);
         
-        return hotel;
+        return (HotelModel)hotel.Clone();
     }
 
     public List<HotelModel> GetAllHotels() 

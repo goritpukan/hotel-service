@@ -1,18 +1,16 @@
 namespace HotelService.Library.Models;
 
-public class ClientModel
+public class ClientModel : ICloneable
 {
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
-    
-    private readonly List<ReservationModel> _reservationRequests;
+    public string FullName => $"{FirstName} {LastName}";
 
     public ClientModel(string firstName, string lastName)
     {
         ValidateConstructorInputs(firstName, lastName);
         FirstName = firstName;
         LastName = lastName;
-        _reservationRequests = new List<ReservationModel>();
     }
 
     private static void ValidateConstructorInputs(string firstName, string lastName)
@@ -24,12 +22,8 @@ public class ClientModel
              throw new ArgumentNullException(nameof(lastName), "Last name cannot be null or empty");
     }
 
-    public void AddReservationRequest(ReservationModel reservationModel)
+    public object Clone()
     {
-        if(reservationModel == null)
-            throw new ArgumentNullException(nameof(reservationModel), "Reservation request cannot be null");
-        _reservationRequests.Add(reservationModel);
+        return new ClientModel(FirstName, LastName);
     }
-    
-    
 }
