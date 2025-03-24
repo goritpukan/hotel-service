@@ -7,8 +7,7 @@ public class HotelModel : ICloneable
     public string Name { get; private set; }
     public int Capacity { get; private set; }
     public string Description { get; private set; }
-    //Composition
-
+    
     public HotelModel(string name, int capacity, string description)
     {
         ValidateConstructorInputs(name, capacity, description);
@@ -31,26 +30,4 @@ public class HotelModel : ICloneable
     {
         return new HotelModel(Name, Capacity, Description);
     }
-
-    /*public void AddReservation(int room, string description, DateTime startDate, DateTime endDate, ClientModel clientModel)
-    {
-        var reservation = new ReservationModel(room, description, startDate, endDate, this);
-        ValidateRoom(reservation);
-        clientModel.AddReservationRequest(reservation);
-        _reservationRequests.Add(reservation);
-    }
-
-    private void ValidateRoom(ReservationModel reservationModel)
-    {
-        if(_reservationRequests.Any(request => 
-            request.Room == reservationModel.Room && 
-            reservationModel.StartDate < request.EndDate && request.StartDate < reservationModel.EndDate))
-        {
-            throw new AlreadyReservedException(reservationModel.Room);
-        }
-        
-        if (reservationModel.Room > Capacity)
-            throw new RoomCapacityExceededException(reservationModel.Room, Capacity);
-    }
-    */
 }

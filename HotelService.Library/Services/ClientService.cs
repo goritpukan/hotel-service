@@ -15,28 +15,41 @@ public class ClientService
         _clients.Add(client);
     }
 
-    public void DeleteClientByFullName(string fullName)
+    private ClientModel FindClientByFullName(string fullName)
     {
-        var client = _clients.FirstOrDefault(client => client.FullName == fullName);
+        if(string.IsNullOrWhiteSpace(fullName))
+            throw new ArgumentNullException(nameof(fullName), "Full name cannot be null");
+        
+        var client =  _clients.FirstOrDefault(client => client.FullName == fullName);
         if(client is null)
             throw new ClientNotFoundException(fullName);
         
+        return client;
+    }
+
+    public void DeleteClientByFullName(string fullName)
+    {
+       var client = FindClientByFullName(fullName);
         _clients.Remove(client);
     }
 
     public void ChangeClientByFullName(string fullName, ClientModel client)
     {
+        if(string.IsNullOrWhiteSpace(fullName))
+            throw new ArgumentNullException(nameof(fullName), "Full name cannot be null");
+        
+        if(client is null)
+            throw new ArgumentNullException(nameof(client), "Client cannot be null");
+        
         int index = _clients.FindIndex(client => client.FullName == fullName);
         if(index == -1)
             throw new ClientNotFoundException(fullName);
         _clients[index] = client;
     }
 
-    public ClientModel FindClientByFullName(string fullName)
+    public ClientModel GetClientByFullName(string fullName)
     {
-        var client =  _clients.FirstOrDefault(client => client.FullName == fullName);
-        if(client is null)
-            throw new ClientNotFoundException(fullName);
+       var client = FindClientByFullName(fullName);
         return (ClientModel)client.Clone();
     }
 

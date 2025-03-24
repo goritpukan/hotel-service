@@ -16,21 +16,27 @@ public class HotelService
         _hotels.Add(hotel);
     }
 
-    public void DeleteHotelByName(string name)
+    private HotelModel FindHotelByName(string name)
     {
+        if(string.IsNullOrWhiteSpace(name))
+            throw new ArgumentNullException(nameof(name), "Hotel name cannot be null or empty");
+        
         var hotel = _hotels.FirstOrDefault(hotel => hotel.Name == name);
         if (hotel is null)
             throw new HotelNotFoundException(name);
         
+        return hotel;
+    }
+
+    public void DeleteHotelByName(string name)
+    {
+       var hotel = FindHotelByName(name);
         _hotels.Remove(hotel);
     }
 
     public HotelModel GetHotelByName(string name)
     {
-        var hotel = _hotels.FirstOrDefault(hotel => hotel.Name == name);
-        if (hotel is null)
-            throw new HotelNotFoundException(name);
-        
+       var hotel = FindHotelByName(name);
         return (HotelModel)hotel.Clone();
     }
 
