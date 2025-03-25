@@ -47,15 +47,11 @@ public class ReservationService
         _reservations.Remove(reservation);
     }
 
-    public void ChangeReservation(HotelModel hotel, DateTime startDate, DateTime endDate, ReservationModel reservation)
+    public void ChangeReservationDescription(HotelModel hotel, DateTime startDate, DateTime endDate, string description)
     {
-        var newReservation = FindReservation(hotel, startDate, endDate);
-        int index = _reservations.IndexOf(reservation);
-        if(index == -1)
-            throw new ReservationNotFoundException();
-        _reservations[index] = newReservation;
+        var reservation = FindReservation(hotel, startDate, endDate);
+        reservation.Update(description);
     }
-
     public List<ReservationModel> GetAllReservationsByFullName(string fullName)
     {
         if (string.IsNullOrWhiteSpace(fullName)) 

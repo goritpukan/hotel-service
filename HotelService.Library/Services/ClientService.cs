@@ -33,18 +33,10 @@ public class ClientService
         _clients.Remove(client);
     }
 
-    public void ChangeClientByFullName(string fullName, ClientModel client)
+    public void ChangeClientByFullName(string fullName, string newFirstName, string newLastName)
     {
-        if(string.IsNullOrWhiteSpace(fullName))
-            throw new ArgumentNullException(nameof(fullName), "Full name cannot be null");
-        
-        if(client is null)
-            throw new ArgumentNullException(nameof(client), "Client cannot be null");
-        
-        int index = _clients.FindIndex(client => client.FullName == fullName);
-        if(index == -1)
-            throw new ClientNotFoundException(fullName);
-        _clients[index] = client;
+        var client = FindClientByFullName(fullName);
+        client.Update(newFirstName, newLastName);
     }
 
     public ClientModel GetClientByFullName(string fullName)

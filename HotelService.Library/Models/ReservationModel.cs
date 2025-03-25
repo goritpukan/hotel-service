@@ -5,7 +5,7 @@ namespace HotelService.Library.Models;
 public class ReservationModel : ICloneable
 { 
     public int Room { get; }
-    public string Description { get; }
+    public string Description { get; private set; }
     public DateTime StartDate { get; }
     public DateTime EndDate { get; }
     public HotelModel Hotel { get; }
@@ -42,6 +42,13 @@ public class ReservationModel : ICloneable
         
         if(client is null)
             throw new ArgumentNullException(nameof(client), "Client cannot be null");
+    }
+
+    public void Update(string description)
+    {
+        if (string.IsNullOrWhiteSpace(description))
+            throw new ArgumentNullException(nameof(description), "Description cannot be null");
+        Description = description;
     }
 
     public object Clone()
