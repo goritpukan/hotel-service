@@ -28,23 +28,32 @@ public class ReservationService
             throw new RoomCapacityExceededException(reservation.Room, reservation.Hotel.Capacity);
     }
 
-    private ReservationModel FindReservationByFullName(string fullName)
+    private ReservationModel FindReservation(HotelModel hotel, DateTime startDate, DateTime endDate)
     {
-        if(string.IsNullOrWhiteSpace(fullName))
-            throw new ArgumentNullException(nameof(fullName), "Full name cannot be null");
+        if(hotel is null)
+            throw new ArgumentNullException(nameof(hotel), "Hotel cannot be null");
         
-        var reservation = _reservations.FirstOrDefault(reservation => reservation.Client.FullName == fullName);
-        
-        if(reservation is null)
+        var reservation = _reservations.FirstOrDefault(reservation => 
+            reservation.Hotel == hotel &&
+            reservation.StartDate == startDate &&
+            reservation.EndDate == endDate);
+        if (reservation is null)
             throw new ReservationNotFoundException();
-        
         return reservation;
     }
-
-    public void CancelReservationByFullName(string fullName)
+    public void CancelReservation(HotelModel hotel, DateTime startDate, DateTime endDate)
     {
-        var reservation = FindReservationByFullName(fullName);
+        var reservation = FindReservation(hotel, startDate, endDate);
         _reservations.Remove(reservation);
+    }
+
+    public void ChangeReservation(HotelModel hotel, DateTime startDate, DateTime endDate, ReservationModel reservation)
+    {
+        var newReservation = FindReservation(hotel, startDate, endDate);
+        int index = _reservations.IndexOf(reservation);
+        if(index == -1)
+            throw new ReservationNotFoundException();
+        _reservations[index] = newReservation;
     }
 
     public List<ReservationModel> GetAllReservationsByFullName(string fullName)
@@ -77,7 +86,7 @@ public class ReservationService
             throw new ArgumentNullException(nameof(hotel), "Hotel cannot be null");
         
         return _reservations
-            .Where(reservation => reservation.Hotel.Name == hotel.Name && reservation.Room == roomNumber)
+            .Where(reservation => reservation.Hotel == hotel && reservation.Room == roomNumber)
             .Select(reservation => (ReservationModel)reservation.Clone())
             .ToList();
     }

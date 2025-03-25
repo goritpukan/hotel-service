@@ -2,8 +2,8 @@ namespace HotelService.Library.Models;
 
 public class ClientModel : ICloneable
 {
-    public string FirstName { get; private set; }
-    public string LastName { get; private set; }
+    public string FirstName { get; }
+    public string LastName { get; }
     public string FullName => $"{FirstName} {LastName}";
 
     public ClientModel(string firstName, string lastName)

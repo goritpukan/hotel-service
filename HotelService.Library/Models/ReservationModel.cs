@@ -4,12 +4,12 @@ namespace HotelService.Library.Models;
 
 public class ReservationModel : ICloneable
 { 
-    public int Room { get; private set;}
-    public string Description { get; private set; }
-    public DateTime StartDate { get; private set; }
-    public DateTime EndDate { get; private set; }
-    public HotelModel Hotel { get; private set; }
-    public ClientModel Client { get; private set; }
+    public int Room { get; }
+    public string Description { get; }
+    public DateTime StartDate { get; }
+    public DateTime EndDate { get; }
+    public HotelModel Hotel { get; }
+    public ClientModel Client { get; }
 
     public ReservationModel(int room, string description, DateTime startDate, DateTime endDate, HotelModel hotel, ClientModel client)
     {
