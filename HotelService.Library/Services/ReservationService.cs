@@ -15,6 +15,7 @@ public class ReservationService
         
         _reservations.Add(reservation);
     }
+    
     private void ValidateRoom(ReservationModel reservation)
     {
         if(_reservations.Any(request => 
@@ -41,6 +42,7 @@ public class ReservationService
             throw new ReservationNotFoundException();
         return reservation;
     }
+    
     public void CancelReservation(HotelModel hotel, DateTime startDate, DateTime endDate)
     {
         var reservation = FindReservation(hotel, startDate, endDate);
@@ -52,6 +54,7 @@ public class ReservationService
         var reservation = FindReservation(hotel, startDate, endDate);
         reservation.Update(description);
     }
+    
     public List<ReservationModel> GetAllReservationsByFullName(string fullName)
     {
         if (string.IsNullOrWhiteSpace(fullName)) 
