@@ -2,16 +2,16 @@ using HotelService.Library.Exceptions;
 
 namespace HotelService.Library.Models;
 
-public class ReservationModel : ICloneable
+public class Reservation : ICloneable
 { 
     public int Room { get; }
     public string Description { get; private set; }
     public DateTime StartDate { get; }
     public DateTime EndDate { get; }
-    public HotelModel Hotel { get; }
-    public ClientModel Client { get; }
+    public Hotel Hotel { get; }
+    public Client Client { get; }
 
-    public ReservationModel(int room, string description, DateTime startDate, DateTime endDate, HotelModel hotel, ClientModel client)
+    public Reservation(int room, string description, DateTime startDate, DateTime endDate, Hotel hotel, Client client)
     {
         ValidateConstructorInputs(room, description, startDate, endDate, hotel, client);
         
@@ -23,10 +23,10 @@ public class ReservationModel : ICloneable
         Client = client;
     }
 
-    private static void ValidateConstructorInputs(int room, string description, DateTime startDate, DateTime endDate, HotelModel hotel, ClientModel client)
+    private static void ValidateConstructorInputs(int room, string description, DateTime startDate, DateTime endDate, Hotel hotel, Client client)
     {
-        if (room <= 0) 
-            throw new ArgumentOutOfRangeException(nameof(room), "Room number must be greater than zero");
+        if (room < 0) 
+            throw new ArgumentException("Room cannot be less than zero", nameof(room));
         
         if (string.IsNullOrWhiteSpace(description))
             throw new ArgumentNullException(nameof(description), "Description cannot be null");
@@ -53,6 +53,6 @@ public class ReservationModel : ICloneable
 
     public object Clone()
     {
-        return new ReservationModel(Room, Description, StartDate, EndDate, (HotelModel)Hotel.Clone(), (ClientModel)Client.Clone());
+        return new Reservation(Room, Description, StartDate, EndDate, (Hotel)Hotel.Clone(), (Client)Client.Clone());
     }
 }

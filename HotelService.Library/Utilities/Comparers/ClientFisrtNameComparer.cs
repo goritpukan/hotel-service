@@ -2,9 +2,9 @@ using HotelService.Library.Models;
 
 namespace HotelService.Library.Utilities.Comparers;
 
-public class ClientFisrtNameComparer : IComparer<ClientModel>
+public class ClientFisrtNameComparer : IComparer<Client>
 {
-    public int Compare(ClientModel? x, ClientModel? y)
+    public int Compare(Client? x, Client? y)
     {
         if (x is null) return -1; // x < y 
         if (y is null) return 1; // x > y

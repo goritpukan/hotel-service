@@ -1,12 +1,12 @@
 namespace HotelService.Library.Models;
 
-public class ClientModel : ICloneable
+public class Client : ICloneable
 {
     public string FirstName { get; private set; }
     public string LastName { get; private set; }
     public string FullName => $"{FirstName} {LastName}";
 
-    public ClientModel(string firstName, string lastName)
+    public Client(string firstName, string lastName)
     {
         ValidateInputs(firstName, lastName);
         FirstName = firstName;
@@ -31,6 +31,6 @@ public class ClientModel : ICloneable
 
     public object Clone()
     {
-        return new ClientModel(FirstName, LastName);
+        return new Client(FirstName, LastName);
     }
 }
